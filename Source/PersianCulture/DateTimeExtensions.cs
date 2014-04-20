@@ -74,5 +74,68 @@
         {
             return ToLocalizedString(dateTime, "G");
         }
+
+        /// <summary>
+        /// Returns the year part of this <see cref="DateTime"/> using the current culture <see cref="DateTimeFormatInfo"/>.
+        /// </summary>
+        /// <param name="dateTime">The <see cref="DateTime"/> to extend.</param>
+        /// <returns>An integer between 1 and 9999 representing the year part of this <see cref="DateTime"/>.</returns>
+        public static int GetYear(this DateTime dateTime)
+        {
+            var format = Thread.CurrentThread.CurrentCulture.DateTimeFormat;
+            return format.Calendar.GetYear(dateTime);
+        }
+
+        /// <summary>
+        /// Returns the year part of this <see cref="DateTime"/> localized in Persian calendar.
+        /// </summary>
+        /// <param name="dateTime">The <see cref="DateTime"/> to extend.</param>
+        /// <returns>An integer between 1 and 9999 representing the year part of this <see cref="DateTime"/>.</returns>
+        public static int GetLocalizedYear(this DateTime dateTime)
+        {
+            return FormatProvider.Calendar.GetYear(dateTime);
+        }
+
+        /// <summary>
+        /// Returns the month part of this <see cref="DateTime"/> localized in Persian calendar.
+        /// </summary>
+        /// <param name="dateTime">The <see cref="DateTime"/> to extend.</param>
+        /// <returns>An integer between 1 and 12 representing the month part of this <see cref="DateTime"/>.</returns>
+        public static int GetLocalizedMonth(this DateTime dateTime)
+        {
+            return FormatProvider.Calendar.GetMonth(dateTime);
+        }
+
+        /// <summary>
+        /// Returns the month part of this <see cref="DateTime"/> using the current culture <see cref="DateTimeFormatInfo"/>.
+        /// </summary>
+        /// <param name="dateTime">The <see cref="DateTime"/> to extend.</param>
+        /// <returns>An integer between 1 and 12 representing the month part of this <see cref="DateTime"/>.</returns>
+        public static int GetMonth(this DateTime dateTime)
+        {
+            var format = Thread.CurrentThread.CurrentCulture.DateTimeFormat;
+            return format.Calendar.GetMonth(dateTime);
+        }
+
+        /// <summary>
+        /// Returns the day-of-month part of this <see cref="DateTime"/> using the current culture <see cref="DateTimeFormatInfo"/>.
+        /// </summary>
+        /// <param name="dateTime">The <see cref="DateTime"/> to extend.</param>
+        /// <returns>An integer between 1 and 31 representing the day-of-month part of this <see cref="DateTime"/>.</returns>
+        public static int GetDayOfMonth(this DateTime dateTime)
+        {
+            var format = Thread.CurrentThread.CurrentCulture.DateTimeFormat;
+            return format.Calendar.GetDayOfMonth(dateTime);
+        }
+
+        /// <summary>
+        /// Returns the day-of-month part of this <see cref="DateTime"/> localized in Persian calendar.
+        /// </summary>
+        /// <param name="dateTime">The <see cref="DateTime"/> to extend.</param>
+        /// <returns>An integer between 1 and 31 representing the day-of-month part of this <see cref="DateTime"/>.</returns>
+        public static int GetLocalizedDayOfMonth(this DateTime dateTime)
+        {
+            return FormatProvider.Calendar.GetDayOfMonth(dateTime);
+        }
     }
 }
