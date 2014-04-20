@@ -27,7 +27,6 @@
             AddPersianCalendar(this);
         }
 
-
         /// <summary>
         /// Adds an instance of <see cref="PersianCalendar"/> to the list of optional calendars of the 
         /// specified <see cref="CultureInfo"/> and applies localization and correct persian formatting 
@@ -72,6 +71,35 @@
         public static DateTimeFormatInfo GetDateTimeFormat()
         {
             return LocalizeDateTimeFormatInfo(new DateTimeFormatInfo());
+        }
+
+        /// <summary>
+        /// Adds <see cref="PersianCalendar"/> to the list of optional calendars of the specified <paramref name="culture"/> in the given <paramref name="index"/>.
+        /// </summary>
+        /// <param name="culture">The <see cref="CultureInfo"/> instance to add the <see cref="PersianCalendar"/> to its list of OptionalCalendars.</param>
+        /// <param name="index">The index of element in optional calendars to be set to PersianCalendar or a negative number to add the PersianCalendar at the end of available calendars.</param>
+        /// <returns>Same instance of passed <paramref name="culture"/> which has <see cref="PersianCalendar"/> as an optional calendar.</returns>
+        private static CultureInfo AddOptionalCalendars(CultureInfo culture, int index)
+        {
+            Debug.Assert(culture != null, "culture is null");
+
+            var cultureDataField = culture.GetType().GetField("m_cultureData", AllModifiersBindingFlag);
+            if( cultureDataField != null )
+            {
+                var cultureData = cultureDataField.GetValue(culture);
+                var calendarIdProperty = cultureData.GetType().GetProperty("CalendarIds", AllModifiersBindingFlag);
+                var calendars = (int[])calendarIdProperty.GetValue(cultureData, null);
+
+                if( index >= calendars.Length )
+                    throw new ArgumentException(string.Format("index should be less than {0} (Optional Calendars length).", calendars.Length));
+
+                if( index < 0 )
+                    index = calendars.Length - 1;
+
+                calendars[index] = 0x16;
+            }
+
+            return culture;
         }
 
         /// <summary>
@@ -123,35 +151,6 @@
                 formatInfoIsReadOnly.SetValue(dateTimeFormat, true);
 
             return dateTimeFormat;
-        }
-
-        /// <summary>
-        /// Adds <see cref="PersianCalendar"/> to the list of optional calendars of the specified <paramref name="culture"/> in the given <paramref name="index"/>.
-        /// </summary>
-        /// <param name="culture">The <see cref="CultureInfo"/> instance to add the <see cref="PersianCalendar"/> to its list of OptionalCalendars.</param>
-        /// <param name="index">The index of element in optional calendars to be set to PersianCalendar or a negative number to add the PersianCalendar at the end of available calendars.</param>
-        /// <returns>Same instance of passed <paramref name="culture"/> which has <see cref="PersianCalendar"/> as an optional calendar.</returns>
-        private static CultureInfo AddOptionalCalendars(CultureInfo culture, int index)
-        {
-            Debug.Assert(culture != null, "culture is null");
-
-            var cultureDataField = culture.GetType().GetField("m_cultureData", AllModifiersBindingFlag);
-            if( cultureDataField != null )
-            {
-                var cultureData = cultureDataField.GetValue(culture);
-                var calendarIdProperty = cultureData.GetType().GetProperty("CalendarIds", AllModifiersBindingFlag);
-                var calendars = (int[])calendarIdProperty.GetValue(cultureData, null);
-
-                if( index >= calendars.Length )
-                    throw new ArgumentException(string.Format("index should be less than {0} (Optional Calendars length).", calendars.Length));
-
-                if( index < 0 )
-                    index = calendars.Length - 1;
-
-                calendars[index] = 0x16;
-            }
-
-            return culture;
         }
     }
 }

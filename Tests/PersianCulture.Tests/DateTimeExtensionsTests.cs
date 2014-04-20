@@ -1,8 +1,9 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace PersianCulture.Tests
+﻿namespace PersianCulture.Tests
 {
+    using System;
+
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
     // ReSharper disable InconsistentNaming
     [TestClass]
     public class DateTimeExtensionsTests
